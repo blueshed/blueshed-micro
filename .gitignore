@@ -1,0 +1,11 @@
+
+.project
+
+.pydevproject
+
+.env
+
+.settings
+
+/blueshed_micro.egg-info
+*.pyc
