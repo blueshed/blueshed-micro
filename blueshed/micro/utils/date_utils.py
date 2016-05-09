@@ -11,6 +11,8 @@ def parse_date(value):
         Returns a Python datetime.datetime object,
         the input must be in some date ISO format
     """
+    if isinstance(value, (datetime.date, datetime.datetime)):
+        return value
     result = None
     if value:
         try:
