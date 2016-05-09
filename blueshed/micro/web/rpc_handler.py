@@ -39,14 +39,18 @@ class RpcHandler(ContextMixin, CorsMixin, RequestHandler):
             result is always json
     '''
 
-    def initialize(self, html_template=None, js_template=None, http_origins=None, ws_url=None):
+    def initialize(self,
+                   html_template=None,
+                   js_template=None,
+                   http_origins=None,
+                   ws_url=None):
         RequestHandler.initialize(self)
         self.set_cors_methods("OPTIONS,GET,POST")
         if http_origins:
             self.set_cors_whitelist(http_origins)
         self._html_template = html_template
         self._js_template = js_template
-        self._ws_url = ws_url if ws_url else "ws://localhost:8080/websocket"
+        self._ws_url = ws_url
 
     def get_template_path(self):
         ''' overrides the template path to use this module '''

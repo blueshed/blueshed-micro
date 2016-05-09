@@ -66,8 +66,13 @@ Control.prototype.init = function(broadcast_callback, close_callback){
 Control.prototype._connect = function(){
 	return new Promise(function(resolve,reject){
 		var ws = null;
+		var protocol = document.location.protocol == "https:"? "wss://" : "ws://";
+		var ws_url = '{{ ws_url }}';
+		if(! ws_url){
+			ws_url = protocol + document.domain + ":" + document.location.port + '/websocket';
+		}
 		try{
-			ws = new WebSocket('{{ ws_url }}' + "?client_id="+this._client_id);
+			ws = new WebSocket(ws_url + "?client_id="+this._client_id);
 		}
 		catch(err){
 			reject(err);
