@@ -50,7 +50,7 @@ class RpcHandler(ContextMixin, CorsMixin, RequestHandler):
             self.set_cors_whitelist(http_origins)
         self._html_template = html_template
         self._js_template = js_template
-        self._ws_url = ws_url
+        self._ws_url = ws_url if ws_url else ''
 
     def get_template_path(self):
         ''' overrides the template path to use this module '''
