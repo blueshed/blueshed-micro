@@ -5,9 +5,15 @@ import logging
 
 def load_config(path=None):
     '''
+        This extends the tornado parser to enable use in
+        heroku where options are accessed through os.getenv
+
         Will read file at path if exists
+
         Will then read environment variables to override
+
         Will then parse command line to override
+
     '''
     if path is not None and os.path.isfile(path):
         logging.info("loading config from %s", path)

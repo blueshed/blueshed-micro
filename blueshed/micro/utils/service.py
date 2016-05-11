@@ -43,9 +43,11 @@ class Service(object):
     @classmethod
     def describe(cls, target):
         '''
-            Will list target and inspect each
+            Will dir target and inspect each
             function and return an instance of
             this class for each
+
+            functions starting with '_' are ignored
         '''
         result = OrderedDict()
         for key in filter(lambda x: x[0] != '_', dir(target)):
@@ -106,11 +108,15 @@ class Service(object):
 
     @property
     def has_files(self):
+        '''
+            returns True if a parameter has as annotation 'file'
+        '''
         for param in self.desc.parameters.values():
             if param.annotation == 'file':
                 return True
 
     def to_json(self):
+        ''' so it can be dumped '''
         return OrderedDict([
             ("name", self.name),
             ("params", [str(p) for p in self.desc.parameters.values()]),

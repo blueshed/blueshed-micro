@@ -3,7 +3,6 @@ from blueshed.micro.utils import config
 from tornado.options import options, define
 import os
 import subprocess
-from blueshed.micro.orm.orm_utils import heroku_db_url
 
 define("db_url", default="three")
 define('PORT',

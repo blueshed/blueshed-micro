@@ -16,6 +16,7 @@ Contents:
    orm
    queue
    utils
+   example
 
 
 

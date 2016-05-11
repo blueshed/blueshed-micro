@@ -32,10 +32,10 @@ application = tornado.web.Application([
     allow_exception_messages=True)
 
 
-db_connection.db_init("mysql+pymysql://root:root@localhost:8889/test")
+engine = db_connection.db_init("mysql+pymysql://root:root@localhost:8889/test")
 with db_connection.session() as session:
     drop_all(session)
-create_all(Base, db_connection._engine_)
+create_all(Base, engine)
 with db_connection.session() as session:
     session.add(model.User(name="admin", email="admin", password="admin"))
     session.commit()

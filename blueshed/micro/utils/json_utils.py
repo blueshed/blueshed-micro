@@ -12,7 +12,10 @@ except ImportError:
 
 
 class DateTimeEncoder(json.JSONEncoder):
-    """Encodes datetimes and Decimals"""
+    """
+        Encodes datetimes and Decimals
+        calls to_json on object if it has that method
+    """
 
     def default(self, obj):
         try:
@@ -35,8 +38,10 @@ class DateTimeEncoder(json.JSONEncoder):
 
 
 def loads(*args, **kwargs):
+    ''' calls json.loads '''
     return json.loads(*args, **kwargs)
 
 
 def dumps(o, **kwargs):
+    ''' calls json.loads with DateTimeEncoder '''
     return json.dumps(o, cls=DateTimeEncoder, **kwargs)

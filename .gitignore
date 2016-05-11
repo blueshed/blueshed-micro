@@ -8,4 +8,7 @@
 .settings
 
 /blueshed_micro.egg-info
+
 *.pyc
+
+/cache
