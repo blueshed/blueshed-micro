@@ -3,7 +3,7 @@ from tests.actions import model
 
 
 def filter_groups(context: 'micro_context', term='',
-                  offset=0, limit=10, id=None):
+                  offset=0, limit=10, id=None) -> list:
     '''
         returns a list of groups filtered by
         group.name starts with term

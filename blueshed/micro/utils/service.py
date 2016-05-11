@@ -94,6 +94,16 @@ class Service(object):
             else:
                 values[k] = None
 
+    @classmethod
+    def annotation_to_str(cls, annotation):
+        if annotation is None:
+            return None
+        if isinstance(annotation, str):
+            return annotation
+        if issubclass(annotation, object):
+            return annotation.__name__
+        return annotation
+
     @property
     def has_files(self):
         for param in self.desc.parameters.values():
@@ -101,9 +111,11 @@ class Service(object):
                 return True
 
     def to_json(self):
-        return {
-            "name": self.name,
-            "params": [str(p) for p in self.desc.parameters.values()],
-            "docs": self.docs,
-            "has_files": self.has_files
-        }
+        return OrderedDict([
+            ("name", self.name),
+            ("params", [str(p) for p in self.desc.parameters.values()]),
+            ("returns", self.annotation_to_str(self.desc.return_annotation)
+             if self.desc.return_annotation is not self.desc.empty else ""),
+            ("has_files", self.has_files),
+            ("docs", self.docs)
+        ])
