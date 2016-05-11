@@ -1,5 +1,6 @@
 from tornado.options import parse_command_line, parse_config_file, options
 import os
+import logging
 
 
 def load_config(path=None):
@@ -9,6 +10,7 @@ def load_config(path=None):
         Will then parse command line to override
     '''
     if path is not None and os.path.isfile(path):
+        logging.info("loading config from %s", path)
         parse_config_file(path)
 
     for k in options.as_dict():

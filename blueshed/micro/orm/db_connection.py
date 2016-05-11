@@ -12,6 +12,7 @@ def db_init(db_url, db_echo=False, db_pool_recycle=None):
     global _session_, _engine_
     _engine_, _session_ = connect(db_url, db_echo, db_pool_recycle)
     logging.info("connecting to: %s", db_url)
+    return _engine_
 
 
 def register_db(db_url, models, db_echo=False, db_pool_recycle=None):
