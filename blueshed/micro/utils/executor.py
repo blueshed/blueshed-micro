@@ -1,10 +1,12 @@
 from blueshed.micro.utils import resources
 from tornado.concurrent import Future
 from tornado.ioloop import IOLoop
+from tornado.autoreload import add_reload_hook
 from functools import wraps
 import logging
 import os
 import inspect
+from concurrent.futures.process import ProcessPoolExecutor
 
 
 LOGGER = logging.getLogger(__name__)
@@ -15,6 +17,15 @@ _pool_ = None
 def pool_init(pool):
     global _pool_
     _pool_ = pool
+
+
+def pool_init_processes(pool_size, debug=False):
+    micro_pool = ProcessPoolExecutor(pool_size)
+    pool_init(micro_pool)
+    if debug is True:
+        add_reload_hook(micro_pool.shutdown)
+    logging.info("pool intialized with %s processes", pool_size)
+    return micro_pool
 
 
 def global_pool():

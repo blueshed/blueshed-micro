@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = '8'
+version = '9'
 
 setup(name='blueshed-micro',
       version=version,
