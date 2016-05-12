@@ -33,6 +33,7 @@
 		    </div>
 			<div class="panel-body">
 				<form method="post" id="serviceForm">
+					<input type="hidden" name="_id" value="-1"/>
 					{% for param in service.desc.parameters.values() %}{%if param.name[0] != '_' and param.name != 'context' %}
 					<div class="form-group">
 						<label>{{ param.name.split(":")[0] }}</label>
@@ -51,10 +52,9 @@
 					<strong>oops!</strong> {%raw error %}
 				</div>
 			</div>{% end %}
-			{%if result %}
-			<div class="panel-footer" v-cloak>
-				{{ result }}
-			</div>{% end %}
+			<div class="panel-footer">
+				{{ result or '' }}
+			</div>
 		</div>
 	</div>
  {% end %}
@@ -78,19 +78,21 @@
 						$(".panel").append("<div class='panel-footer'></div>");
 					}
 					if(responseText && typeof responseText === 'object'){
+						$(".panel").removeClass("panel-danger").addClass("panel-default");
 						if(responseText.result){
 							responseText = JSON.stringify(responseText.result);
-							$(".panel").removeClass('panel-danger').addClass("panel-default");
 						}
-						else{
+						else if(responseText.error){
 							responseText = $("<div class='alert alert-danger' role='alert'>").text(responseText.message);
 							$(".panel").removeClass("panel-default").addClass("panel-danger");
 						}
 					}
 					$(".panel-footer").empty().append(responseText);
 				},
-				error: function(err){
+				error: function(err, status, message){
 					console.log('error',arguments);
+					$(".panel").removeClass("panel-default").addClass("panel-danger");
+					$(".panel-footer").empty().append(message);
 				}
 			});
 			return false;

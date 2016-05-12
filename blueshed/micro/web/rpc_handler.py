@@ -94,10 +94,12 @@ class RpcHandler(ContextMixin, CorsMixin, RequestHandler):
             kwargs = json_decode(self.request.body)
         elif content_type in acceptable_form_mime_types:
             kwargs = dict([(k, self.get_argument(k))
-                           for k in self.request.body_arguments.keys()])
+                           for k in self.request.body_arguments.keys()
+                           if k[0] != "_"])
         elif content_type and content_type.startswith("multipart/form-data"):
             kwargs = dict([(k, self.get_argument(k))
-                           for k in self.request.body_arguments.keys()])
+                           for k in self.request.body_arguments.keys()
+                           if k[0] != "_"])
         else:
             raise web.HTTPError(415, 'content type not supported {}'.format(
                 self.request.headers['content-type']))
