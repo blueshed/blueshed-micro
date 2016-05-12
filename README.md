@@ -1,5 +1,5 @@
 #blueshed.micro
 
-![alt tag](./topology.png)
+[![Documentation Status](https://readthedocs.org/projects/blueshed-micro/badge/?version=latest)](http://blueshed-micro.readthedocs.io/en/latest/?badge=latest)
 
-[documentation](http://blueshed-micro.readthedocs.io/)
+![alt tag](./topology.png)
