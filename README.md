@@ -4,4 +4,4 @@
 
 Should you wish to build a SqlAlchemy model you can use this site to start it off: [modeling](http://modeling.blueshed.co.uk/)
 
-![alt tag](./topology.png)
+![alt tag](./docs/_static/micro-architecture.svg)

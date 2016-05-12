@@ -4,7 +4,7 @@ Overview
 Overview of the blueshed.micro Project.
 
 
-.. image:: _static/topology.png
+.. image:: _static/micro-architecture.svg
 
 The problem is how to use Tornado with SqlAlchemy and scale.
 The answer is python. Since python 3.4 there is a ProcessPoolExecutor class
