@@ -90,7 +90,7 @@ Control.prototype._connect = function(){
 	            docCookies.setItem(message.cookie_name,
 	            		message.cookie, expires.toGMTString(),'/',document.domain,null,false);
 	            if(this._broadcast){
-	            	this._broadcast('micro-cookie-set', message.result);
+	            	this._broadcast('MICRO_COOKIE_SET', message.result);
 	            }
 			}
 			if(this._promises[message.id]){
