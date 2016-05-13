@@ -1,5 +1,5 @@
-SqlAchemy
-=========
+SqlAlchemy
+==========
 
 Example of the blueshed.micro Server using SQLAlchemy to connect to MySQL.
 
