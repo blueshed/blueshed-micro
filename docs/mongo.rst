@@ -1,7 +1,7 @@
-Example
-=======
+Mongo
+=====
 
-Example of the blueshed.micro Server.
+Example of the blueshed.micro Server using Motor to connect to Mongodb.
 
 The context links to mongodb via motor
 
