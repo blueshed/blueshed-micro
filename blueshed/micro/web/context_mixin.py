@@ -75,8 +75,8 @@ class ContextMixin(UserMixin):
         if hasattr(self, "_cookies_"):
             self._cookies_.update(context.cookies)
             # TODO: remove None value keys (cookies)
-        self.flush_context(context)
         self.write_result(context, result)
+        self.flush_context(context)
 
     def write_result(self, context, result):
         """Format a result response."""

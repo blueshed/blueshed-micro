@@ -32,4 +32,4 @@ def parse_date(value):
 
 
 def parse_unix_time(value):
-    return datetime.datetime.fromtimestamp(int(value))
+    return datetime.datetime.fromtimestamp(float(value))

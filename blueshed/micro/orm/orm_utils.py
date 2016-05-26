@@ -36,7 +36,7 @@ def overlaps(cls, from_date, to_date):
 def valid_on(cls, on_date=None):
     '''
         Will check if on_date is within
-        cls.from_date cls.to_date range
+        cls.valid_from cls.valid_to range
         returns a sqlqlchemy clause
     '''
     if on_date is None:
@@ -44,6 +44,19 @@ def valid_on(cls, on_date=None):
     return and_(cls.valid_from <= on_date,
                 or_(cls.valid_to > on_date,
                     cls.valid_to.is_(None)))
+
+
+def from_on(cls, on_date=None):
+    '''
+        Will check if on_date is within
+        cls.from_date cls.to_date range
+        returns a sqlqlchemy clause
+    '''
+    if on_date is None:
+        on_date = datetime.datetime.now()
+    return and_(cls.from_date <= on_date,
+                or_(cls.to_date > on_date,
+                    cls.to_date.is_(None)))
 
 
 def connect(db_url, echo=False, pool_recycle=None):
