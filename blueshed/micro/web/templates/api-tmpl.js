@@ -95,7 +95,9 @@ Control.prototype._connect = function(){
 			}
 			if(this._promises[message.id]){
 				if(message.error){
-					this._promises[message.id].reject(message);
+					var error_obj = new Error(message.error);
+	                error_obj["original_payload"] = message;
+					this._promises[message.id].reject(error_obj);
 				} else {
 					this._promises[message.id].resolve(message.result);
 				}
@@ -118,7 +120,7 @@ Control.prototype._connect = function(){
 		}.bind(this);
 		ws.onerror = function(err){
 			if(!this._connection){
-				reject(err.code || 'unknown error');
+				reject(new Error(err.code || 'unknown error'));
 			}
 		}.bind(this);
 	}.bind(this));
