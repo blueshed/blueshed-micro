@@ -6,6 +6,7 @@ from functools import wraps
 import logging
 import os
 import inspect
+from asyncio import iscoroutinefunction
 from concurrent.futures.process import ProcessPoolExecutor
 
 
