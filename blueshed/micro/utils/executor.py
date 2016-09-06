@@ -54,7 +54,13 @@ def run_in_pool(_pid, _f, _has_context, context, *args, **kwargs):
     LOGGER.debug("running %s %s", os.getpid(), context)
     if _has_context:
         kwargs[_has_context] = context
-    result = _f(*args, **kwargs)
+
+    if iscoroutinefunction(_f):
+        result = IOLopp.current.run_sync(_f, *args, **kwargs)
+        IOLoop.current().stop()
+    else:
+        result = _f(*args, **kwargs)
+
     if not subprocess:
         return result
     if isinstance(result, Future):
