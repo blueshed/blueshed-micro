@@ -1,12 +1,11 @@
 from pkg_resources import resource_filename  # @UnresolvedImport
 from tornado import web
 from tornado.escape import json_decode
-from tornado.web import asynchronous, RequestHandler
+from tornado.web import RequestHandler
 import tornado.concurrent
 from blueshed.micro.utils.json_utils import dumps
 from blueshed.micro.web.context_mixin import ContextMixin
 from blueshed.micro.web.cors_mixin import CorsMixin, cors
-import functools
 import logging
 
 acceptable_form_mime_types = [
@@ -86,9 +85,8 @@ class RpcHandler(ContextMixin, CorsMixin, RequestHandler):
         self.set_header('content-type', 'application/json; charset=UTF-8')
         self.write(dumps(services, indent=4))
 
-    @asynchronous
     @cors
-    def post(self, path):
+    async def post(self, path):
         content_type = self.request.headers['content-type']
         if content_type in acceptable_json_mime_types:
             kwargs = json_decode(self.request.body)
@@ -110,13 +108,10 @@ class RpcHandler(ContextMixin, CorsMixin, RequestHandler):
             self)
         try:
             logging.info("%s(%r)", service.name, kwargs)
-            result = service.perform(context, **kwargs)
+            result = await service.perform(context, **kwargs)
             if tornado.concurrent.is_future(result):
-                result.add_done_callback(
-                    functools.partial(self.handle_future,
-                                      service,
-                                      context,
-                                      True))
+                await result
+                self.handle_future(service, context, True, result)
             else:
                 self.handle_result(service, context, result)
                 self.finish()
