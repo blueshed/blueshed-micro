@@ -5,6 +5,7 @@ from tornado.ioloop import IOLoop
 import os
 from blueshed.micro.utils import executor
 from functools import wraps
+from asyncio import iscoroutinefunction
 
 LOGGER = logging.getLogger(__name__)
 
@@ -58,7 +59,7 @@ class Service(object):
                 result[key] = s
         return result
 
-    def perform(self, context, **kwargs):
+    async def perform(self, context, **kwargs):
         '''
             Call synchronously
         '''
@@ -69,7 +70,10 @@ class Service(object):
         else:
             if self.has_context:
                 kwargs[self.has_context] = context
-            return self.f(**kwargs)
+            if iscoroutinefunction(self.f):
+                return await self.f(**kwargs)
+            else:
+                return self.f(**kwargs)
 
     def perform_in_pool(self, pool, context, **kwargs):
         '''
