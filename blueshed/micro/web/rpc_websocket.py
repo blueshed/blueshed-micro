@@ -5,7 +5,7 @@ from blueshed.micro.web.context_mixin import ContextMixin
 import logging
 import time
 import urllib
-import functools
+from tornado.ioloop import IOLoop
 
 LOGGER = logging.getLogger(__name__)
 
@@ -53,6 +53,9 @@ class RpcWebsocket(ContextMixin,
         LOGGER.debug("websocket open %s", self._client_id)
 
     def on_message(self, message):
+        IOLoop.current().spawn_callback(self.on_message_async, message)
+
+    async def on_message_async(self, message):
         ''' handle an rpc calls '''
         data = json_decode(message)
         for id_, action, kwargs in data.get("requests"):
@@ -67,13 +70,10 @@ class RpcWebsocket(ContextMixin,
                 service = self.settings["services"].get(context.action)
                 if service is None:
                     raise Exception("No such service {}".format(context.action))
-                result = service.perform(context, ** kwargs)
+                result = await service.perform(context, ** kwargs)
                 if concurrent.is_future(result):
-                    result.add_done_callback(
-                        functools.partial(self.handle_future,
-                                          service,
-                                          context,
-                                          False))
+                    await result
+                    self.handle_future(service, context, False, result)
                 else:
                     self.handle_result(service, context, result)
             except Exception as ex:
