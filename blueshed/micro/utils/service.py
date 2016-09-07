@@ -73,7 +73,7 @@ class Service(object):
             if self.has_context:
                 kwargs[self.has_context] = context
             if iscoroutinefunction(self.f):
-                return await self.f(**kwargs)
+                return (yield self.f(**kwargs))
             else:
                 return self.f(**kwargs)
 
