@@ -2,7 +2,6 @@ from pkg_resources import resource_filename  # @UnresolvedImport
 from tornado import web
 from tornado.escape import json_decode
 from tornado.web import RequestHandler
-import tornado.concurrent
 from blueshed.micro.utils.json_utils import dumps
 from blueshed.micro.web.context_mixin import ContextMixin
 from blueshed.micro.web.cors_mixin import CorsMixin, cors
@@ -109,12 +108,8 @@ class RpcHandler(ContextMixin, CorsMixin, RequestHandler):
         try:
             logging.info("%s(%r)", service.name, kwargs)
             result = await service.perform(context, **kwargs)
-            if tornado.concurrent.is_future(result):
-                await result
-                self.handle_future(service, context, True, result)
-            else:
-                self.handle_result(service, context, result)
-                self.finish()
+            self.handle_result(service, context, result)
+            self.finish()
         except Exception as ex:
             self.write_err(context, ex)
             self.finish()

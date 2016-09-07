@@ -71,11 +71,7 @@ class RpcWebsocket(ContextMixin,
                 if service is None:
                     raise Exception("No such service {}".format(context.action))
                 result = await service.perform(context, ** kwargs)
-                if concurrent.is_future(result):
-                    await result
-                    self.handle_future(service, context, False, result)
-                else:
-                    self.handle_result(service, context, result)
+                self.handle_result(service, context, result)
             except Exception as ex:
                 self.write_err(context, ex)
 

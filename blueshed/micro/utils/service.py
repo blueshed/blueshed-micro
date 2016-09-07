@@ -6,6 +6,7 @@ import os
 from blueshed.micro.utils import executor
 from functools import wraps
 from asyncio import iscoroutinefunction
+from tornado.gen import coroutine
 
 LOGGER = logging.getLogger(__name__)
 
@@ -59,14 +60,15 @@ class Service(object):
                 result[key] = s
         return result
 
-    async def perform(self, context, **kwargs):
+    @coroutine
+    def perform(self, context, **kwargs):
         '''
             Call synchronously
         '''
         if executor.global_pool() and self.no_pool is not True:
-            return self.perform_in_pool(executor.global_pool(),
+            return (yield self.perform_in_pool(executor.global_pool(),
                                         context,
-                                        **kwargs)
+                                        **kwargs))
         else:
             if self.has_context:
                 kwargs[self.has_context] = context

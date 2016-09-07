@@ -53,18 +53,6 @@ class ContextMixin(UserMixin):
                 self.cookie_name,
                 dumps(self.current_user)).decode("utf-8")
 
-    def handle_future(self, service, context, finish, future):
-        ''' called by async repsonses '''
-        try:
-            result = future.result()
-            self.handle_result(service, context, result)
-            if finish:
-                self.finish()
-        except Exception as ex:
-            self.write_err(context, ex)
-            if finish:
-                self.finish()
-
     def handle_result(self, service, context, result):
         ''' formats result and checks for user '''
         LOGGER.info("%s = %s", service.name, result)
