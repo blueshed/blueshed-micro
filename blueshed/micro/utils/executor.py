@@ -57,7 +57,8 @@ def run_in_pool(_pid, _f, _has_context, context, *args, **kwargs):
         kwargs[_has_context] = context
 
     if iscoroutinefunction(_f):
-        result = IOLoop.current().run_sync(_f, *args, **kwargs)
+        action = partial(_f, *args, **kwargs)
+        result = IOLoop.current().run_sync(action)
         IOLoop.current().stop()
     else:
         result = _f(*args, **kwargs)
