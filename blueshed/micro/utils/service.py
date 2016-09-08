@@ -6,7 +6,7 @@ import os
 from blueshed.micro.utils import executor
 from functools import wraps
 from asyncio import iscoroutinefunction
-from tornado.gen import coroutine
+from tornado.gen import coroutine, is_future
 
 LOGGER = logging.getLogger(__name__)
 
@@ -73,9 +73,14 @@ class Service(object):
             if self.has_context:
                 kwargs[self.has_context] = context
             if iscoroutinefunction(self.f):
-                return (yield self.f(**kwargs))
+                result = (yield self.f(**kwargs))
             else:
-                return self.f(**kwargs)
+                result = self.f(**kwargs)
+
+            if is_future(result):
+                return (yield result)
+            else:
+                return result
 
     def perform_in_pool(self, pool, context, **kwargs):
         '''
