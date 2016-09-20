@@ -95,7 +95,8 @@ Control.prototype._connect = function(){
 			}
 			if(this._promises[message.id]){
 				if(message.error){
-					var error_obj = new Error(message.error);
+					var error_obj = new Error(message.message);
+                    error_obj.status_code = message.status_code
 	                error_obj["original_payload"] = message;
 					this._promises[message.id].reject(error_obj);
 				} else {
