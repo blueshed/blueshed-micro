@@ -88,13 +88,11 @@ class Service(object):
         for k, v in self.desc.parameters.items():
             if k == "context":
                 continue
-            if values.get(k):
+            if k in values:
                 if v.annotation and v.annotation is int:
                     values[k] = int(values[k])
                 elif v.annotation and v.annotation is float:
                     values[k] = float(values[k])
-            else:
-                values[k] = None
 
     @classmethod
     def annotation_to_str(cls, annotation):

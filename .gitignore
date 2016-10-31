@@ -14,3 +14,5 @@ venv
 *.pyc
 
 /cache
+
+.cache/v/cache/lastfailed
