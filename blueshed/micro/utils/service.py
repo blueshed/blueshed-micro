@@ -85,14 +85,16 @@ class Service(object):
                            **kwargs)
 
     def parse_http_kwargs(self, values):
-        for k, v in self.desc.parameters.items():
-            if k == "context":
-                continue
-            if k in values:
-                if v.annotation and v.annotation is int:
-                    values[k] = int(values[k])
-                elif v.annotation and v.annotation is float:
-                    values[k] = float(values[k])
+        '''
+            type conversion for int and float args
+        '''
+        params = self.desc.parameters.items()
+        for k, v in values:
+            if k in params and v is not None:
+                if params[k].annotation is int:
+                    values[k] = int(v)
+                if params[k].annotation is float:
+                    values[k] = float(v)
 
     @classmethod
     def annotation_to_str(cls, annotation):
