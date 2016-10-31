@@ -3,6 +3,8 @@
 
 .pydevproject
 
+venv
+
 .env
 
 .settings
