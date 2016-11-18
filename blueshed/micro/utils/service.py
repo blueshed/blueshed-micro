@@ -88,7 +88,7 @@ class Service(object):
         '''
             type conversion for int and float args
         '''
-        params = self.desc.parameters.items()
+        params = self.desc.parameters
         for k, v in values.items():
             if k in params and v is not None:
                 if params[k].annotation is int:
